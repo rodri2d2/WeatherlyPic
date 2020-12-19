@@ -11,19 +11,36 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+  
+        
+        
+        //Code below is a simple test to check if response and translation is correct
+        
+//
+//        let session = URLSession(configuration: .default)
+//        var request = URLRequest(url: url!)
+//
+//        request.httpMethod = "POST"
+//
+//        let task = session.dataTask(with: request) { (data, response, error) in
+//
+//            let decoder = JSONDecoder()
+//            guard let data = data else {return}
+//
+//            do{
+//                let decodedData = try decoder.decode(OpenWeatherData.self, from: data)
+//                print(decodedData.name)
+//                print(decodedData.main.temp)
+//                print(decodedData.weather[0].description)
+//            }catch{
+//
+//            }
+//
+//        }
+//
+//
+//        task.resume()
+        
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
