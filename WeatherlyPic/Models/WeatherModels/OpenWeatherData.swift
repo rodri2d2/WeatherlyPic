@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import UIKit
 
 /**
  
@@ -30,5 +30,25 @@ struct OpenWeatherData: Codable {
     var weather: [Weather]
     var coord:   Coordinate
     var wind:    Wind
+    
+    
+    var weatheImage: String {
+        switch self.weather[0].id {
+            case 200...232:
+                return Images.storm.rawValue
+            case 300...321:
+                return Images.drizzle.rawValue
+            case 500...531:
+                return Images.rain.rawValue
+            case 600...622:
+                return Images.snow.rawValue
+            case 701...781:
+                return Images.mist.rawValue
+            case 801...804:
+                return Images.cloud.rawValue
+            default:
+                return Images.clear.rawValue
+        }
+    }
     
 }

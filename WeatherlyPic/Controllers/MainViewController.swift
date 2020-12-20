@@ -9,7 +9,8 @@ import UIKit
 
 class MainViewController: UIViewController {
 
-    @IBOutlet weak var tempLabel: UILabel!
+
+    @IBOutlet weak var weatherIcon: UIImageView!
     
     
     // MARK: - Life cycle
@@ -50,7 +51,10 @@ class MainViewController: UIViewController {
     private func updateUI(weatherData: OpenWeatherData){
         
         DispatchQueue.main.async {
-            self.tempLabel.text = String(weatherData.main.temp)
+            
+            print(weatherData.weatheImage)
+            self.weatherIcon.image = UIImage(systemName: weatherData.weatheImage)
+            
         }
         
        
