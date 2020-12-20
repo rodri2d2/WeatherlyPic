@@ -22,8 +22,8 @@ struct ApiKey {
         if let url = Bundle.main.url(forResource:"APIKEY", withExtension: "plist") {
             do {
                 let data = try Data(contentsOf:url)
-                guard let swiftDictionary = try! PropertyListSerialization.propertyList(from: data, format: nil) as? [String:String] else { return nil}
-                return swiftDictionary["openWeather"]
+                guard let apiDictionary = try! PropertyListSerialization.propertyList(from: data, format: nil) as? [String:String] else { return nil}
+                return apiDictionary["openWeather"]
                 
             } catch {
                 print(error)
