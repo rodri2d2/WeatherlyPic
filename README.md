@@ -12,7 +12,7 @@ The main goal is to create an app to access the resources of public available AP
 - [ ] DispatchQueue
 - [ ] Gesture recognizer
 - [ ] NIB file (for v1.0)
-- [ ] Openweathermap API
+- [X] Openweathermap API
 - [ ] Unsplash API
 
 
