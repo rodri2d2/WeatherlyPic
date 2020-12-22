@@ -32,8 +32,18 @@ struct OpenWeatherData: Codable {
     var wind:    Wind
     
     
+    
+    
+    /**
+        Computed property that returns **last** avaible icon
+        By doing this way if the weather changes during the day
+        The user will see the equivalent icon for the last/actual weather condition
+     */
     var weatheImage: String {
-        switch self.weather[0].id {
+        
+        let id = self.weather.last?.id ?? self.weather[0].id
+        
+        switch id{
             case 200...232:
                 return Images.storm.rawValue
             case 300...321:

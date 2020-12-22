@@ -25,7 +25,7 @@ struct WeatherNetworkManager {
     ///   - name: String - The name of the city to fetch a weather
     ///   - completion: What to do once fetch data is finish successfully or not
     func fetchWeather(byCity name: String, completion: @escaping (Result<OpenWeatherData?, WeatherError>) -> Void){
-
+        
         guard let key = ApiKey.openWeatherKey else { return }
         
         let queryItems:[URLQueryItem] = [
