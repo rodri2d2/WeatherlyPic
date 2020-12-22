@@ -109,6 +109,10 @@ class MainViewController: UIViewController {
 // MARK: - Extention for UITextFieldDelegate
 extension MainViewController: UITextFieldDelegate {
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        self.cityNameTextField.becomeFirstResponder()
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         prepareToRequestByCity()
         return true
