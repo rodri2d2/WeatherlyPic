@@ -15,7 +15,7 @@ Type of images that will be fetched in a UnsplashManager
 - Author: Rodrigo Candido
 - Version: v1.0
 */
-enum UnsplashImageCases: String {
+enum UnsplashImageCase: String {
     
     case clear      = "sunny"
     case cloud      = "cloudy"

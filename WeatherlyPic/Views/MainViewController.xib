@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController" customModule="WeatherlyPic" customModuleProvider="target">
             <connections>
+                <outlet property="backGroundImage" destination="qnf-aj-njx" id="vGc-BH-Bb5"/>
                 <outlet property="cityNameLabel" destination="FyY-wa-PCF" id="jx8-te-AwZ"/>
                 <outlet property="cityNameTextField" destination="aAs-Pd-Zwr" id="Fmb-Bp-78r"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

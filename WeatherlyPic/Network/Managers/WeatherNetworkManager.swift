@@ -55,6 +55,7 @@ struct WeatherNetworkManager {
         }
         
         task.resume()
+        session.finishTasksAndInvalidate()
     }
     
 }

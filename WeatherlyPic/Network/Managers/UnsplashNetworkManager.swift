@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 
 /**
@@ -18,19 +19,17 @@ Use this class to retrieve and translate all data from Unsplash API
  */
 struct UnsplashNetworkManager {
     
-    
-    
     /// Fetch images based on Weather Condition
     /// - Parameters:
     ///   - imageCase: UnsplashImageCases enum
     ///   - completion: What to do once fetch data is finish successfully or not
-    func fetchUsplashImages(by imageCase: UnsplashImageCases, completion: @escaping (Result<UnsplashData?, UnsplashError>) -> Void ){
+    func fetchUsplashImagesData(by imageCase: String, completion: @escaping (Result<UnsplashData?, UnsplashError>) -> Void ){
         
         guard let key = ApiKey.unsplashAccess else { return }
         
         let queryItems:[URLQueryItem] = [
             URLQueryItem(name: "client_id", value: key),
-            URLQueryItem(name: "query", value: imageCase.rawValue),
+            URLQueryItem(name: "query", value: imageCase),
         ]
         
         guard let urlComponent = self.baseURL(byParameters: queryItems),
@@ -45,13 +44,25 @@ struct UnsplashNetworkManager {
             let decoder = JSONDecoder()
             do{
                 let decodedData = try decoder.decode(UnsplashData.self, from: data)
-                print(decodedData.results[1].url.full)
                 completion(.success(decodedData))
             }catch{
                 print(error)
             }
         }
         task.resume()
+    }
+    
+    
+    func fetchImages(url: String, completion: @escaping (Result<UIImage, Error>)->Void){
+        
+        guard let url = URL(string: url) else { return }
+        
+        if let data = try? Data(contentsOf: url) {
+            if let image = UIImage(data: data) {
+                completion(.success(image))
+            }
+        }
+        
     }
  
 }

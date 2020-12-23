@@ -9,7 +9,7 @@ import Foundation
 
 
 
-enum Images: String {
+enum WeatherIconCase: String {
    
     case clear      = "sun.max.fill"
     case cloud      = "cloud.fill"
