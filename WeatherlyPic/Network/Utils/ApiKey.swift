@@ -33,4 +33,21 @@ struct ApiKey {
         return nil
     }
     
+    /// Returs Unsplash API KEY stored in the APIKEY.plist
+    static var unsplashAccess: String? {
+    
+        if let url = Bundle.main.url(forResource:"APIKEY", withExtension: "plist") {
+            do {
+                let data = try Data(contentsOf:url)
+                guard let apiDictionary = try! PropertyListSerialization.propertyList(from: data, format: nil) as? [String:String] else { return nil}
+                return apiDictionary["unsplashAccess"]
+                
+            } catch {
+                print(error)
+            }
+        }
+        
+        return nil
+    }
+    
 }

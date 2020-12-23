@@ -24,7 +24,17 @@ class MainViewController: UIViewController {
         
         //
         setupCityNameTextField()
-    
+        
+        let usplashManager = UnsplashNetworkManager()
+        usplashManager.fetchUsplashImages(by: .clear) { (result) in
+            switch result{
+                case .success(let unsplashData):
+                    print(unsplashData?.results[1].url.full)
+                case .failure(let error):
+                    print(error)
+            }
+        }
+            
     }
     
     

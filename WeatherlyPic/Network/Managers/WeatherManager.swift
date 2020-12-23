@@ -19,7 +19,6 @@ Use this class to retrieve and translate all data from Weather API
  */
 struct WeatherNetworkManager {
 
-    
     /// Make a request with **city name** parameter
     /// - Parameters:
     ///   - name: String - The name of the city to fetch a weather
@@ -54,14 +53,11 @@ struct WeatherNetworkManager {
             }
 
         }
-
-
+        
         task.resume()
-         
     }
     
 }
-
 
 
 // MARK: - Extension for RequestConfigurationProtocol
@@ -75,6 +71,4 @@ extension WeatherNetworkManager: RequestConfigurationProtocol{
         url.queryItems  = parameters
         return url
     }
-    
-
 }
