@@ -10,10 +10,9 @@ The main goal is to create an app to access the resources of public available AP
 - [X] URLSessions
 - [ ] CoreLocation
 - [X] DispatchQueue
-- [ ] Gesture recognizer
 - [X] NIB file (for v1.0)
 - [X] Openweathermap API
-- [ ] Unsplash API
+- [X] Unsplash API
 
 
 
