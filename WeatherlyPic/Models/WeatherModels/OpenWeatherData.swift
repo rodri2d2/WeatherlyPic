@@ -23,7 +23,7 @@ import UIKit
 - Attention: For more information about json response check out the official documentation https://openweathermap.org/current
  
  */
-struct OpenWeatherData: Codable {
+struct OpenWeatherData: Codable{
     
     var name:    String
     var main:    Temperature
@@ -39,25 +39,25 @@ struct OpenWeatherData: Codable {
         By doing this way if the weather changes during the day
         The user will see the equivalent icon for the last/actual weather condition
      */
-    var weatheImage: String {
+    var weatherImage: String {
         
         let id = self.weather.last?.id ?? self.weather[0].id
         
         switch id{
             case 200...232:
-                return Images.storm.rawValue
+                return WeatherIconCase.storm.rawValue
             case 300...321:
-                return Images.drizzle.rawValue
+                return WeatherIconCase.drizzle.rawValue
             case 500...531:
-                return Images.rain.rawValue
+                return WeatherIconCase.rain.rawValue
             case 600...622:
-                return Images.snow.rawValue
+                return WeatherIconCase.snow.rawValue
             case 701...781:
-                return Images.mist.rawValue
+                return WeatherIconCase.mist.rawValue
             case 801...804:
-                return Images.cloud.rawValue
+                return WeatherIconCase.cloud.rawValue
             default:
-                return Images.clear.rawValue
+                return WeatherIconCase.clear.rawValue
         }
     }
     
