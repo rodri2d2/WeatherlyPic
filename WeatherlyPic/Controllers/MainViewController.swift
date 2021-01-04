@@ -8,25 +8,30 @@
 import UIKit
 
 class MainViewController: UIViewController {
-
+    
     // MARK: - Properties
     var cityNameErrorCount = 0
-    let unsplashManager = UnsplashNetworkManager()
     var arrayOfImages   = [String]()
+    var weatherManager  = WeatherManager()
+    var unsplashManager = UnsplashManager()
     
-
     // MARK: - IBOutlets
     @IBOutlet private weak var weatherIcon:     UIImageView!
-    @IBOutlet weak var backGroundImage: UIImageView!
+    @IBOutlet weak var backGroundImage:         UIImageView!
     @IBOutlet private weak var cityNameLabel:   UILabel!
     @IBOutlet weak var cityNameTextField:       UITextField!
     
+    @IBOutlet weak var temperatureLabel: UILabel!
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         //
         setupCityNameTextField()
+        
+        //
+        weatherManager.delegate     = self
+        unsplashManager.delegate    = self
     }
     
     
@@ -39,11 +44,11 @@ class MainViewController: UIViewController {
     // MARK: - Class functionalities
     
     /**
-        This method check if cityNameTextField has a value.
-        Otherwise it will increment a count and throw a error few tries later
-        If cityNameTextField has a value it will call a doRequest method sending text value
-        
-        - Attention: A ManagerClass is responsible to handle its response errors such as INVALID CITY NAME
+     This method check if cityNameTextField has a value.
+     Otherwise it will increment a count and throw a error few tries later
+     If cityNameTextField has a value it will call a doRequest method sending text value
+     
+     - Attention: A ManagerClass is responsible to handle its response errors such as INVALID CITY NAME
      */
     private func prepareToRequestByCity(){
         
@@ -54,8 +59,7 @@ class MainViewController: UIViewController {
                 self.cityNameErrorCount += 1
                 return
             }
-            
-            doRequestWeatherData(byCity: cityName)
+            weatherManager.fetchWeather(by: cityName)
             
         }else{
             
@@ -66,58 +70,9 @@ class MainViewController: UIViewController {
             
             alert.addAction(action)
             present(alert, animated: true, completion: nil)
- 
-        }
-    }
-    
-    /// Fetch a weather request to its manager
-    private func doRequestWeatherData(byCity name: String){
-        
-        let weatherManager = WeatherNetworkManager()
-        weatherManager.fetchWeather(byCity: name) { [weak self] (result) in
-            switch result{
-                case .success(let weatherData):
-                    self?.updateUI(weatherData: weatherData!)
-                case .failure(let error):
-                    print(error)
-            }
-        }
-        
-    }
-    
-    private func prepareToDownloadImage(for condition: String){
-        downloadBackgroundImages(image: condition)
-    }
-    
-    
-    private func downloadBackgroundImages(image type: String){
-        
-        unsplashManager.fetchUsplashImagesData(by: type) { [weak self] (result) in
-        
-            guard let self = self else {return}
             
-            switch result{
-                case .success(let unsplashData):
-                    guard let unsplashData = unsplashData else { return }
-                    self.prepareArrayOfImages(from: unsplashData)
-                case .failure(let error):
-                    print(error.localizedDescription)
-            }
         }
-        
     }
-    
-    private func prepareArrayOfImages(from unsplashData: UnsplashData){
-        
-        arrayOfImages.removeAll()
-        
-        for item in unsplashData.results {
-            self.arrayOfImages.append(item.url.full)
-        }
-        
-        updateBackground()
-    }
-    
     
     
     // MARK: - Class UI functionalities
@@ -125,43 +80,24 @@ class MainViewController: UIViewController {
     /// - Parameter weatherData: the object that contains weather info
     private func updateUI(weatherData: OpenWeatherData){
         
+        
+        
         DispatchQueue.main.async {
             self.weatherIcon.image = UIImage(systemName: weatherData.weatherImage)
             self.cityNameTextField.text = ""
             self.cityNameLabel.text = weatherData.name
-            self.prepareToDownloadImage(for: weatherData.weather.last!.main)
+            self.temperatureLabel.text = "\(weatherData.main.temp)"
         }
-
-    }
-    
-    
-    private func updateBackground(){
         
-        let numberOfUrls = arrayOfImages.count
-        
-        let imageIndex = Int.random(in: 0..<numberOfUrls)
-        
-        unsplashManager.fetchImages(url: arrayOfImages[imageIndex] ?? "") { (result) in
-            switch result {
-                case .success(let image):
-                    DispatchQueue.main.async {
-                    
-                        UIView.animate(withDuration: 3) { [weak self] in
-                            
-                            self?.backGroundImage.alpha = 0
-                            
-                        }
-                        
-                        UIView.animate(withDuration: 3) { [weak self] in
-                            self?.backGroundImage.image = image
-                            self?.backGroundImage.alpha = 1
-                        }
-                    }
+        self.unsplashManager.fetchImageData(for: weatherData.weather.first!.main) { (result) in
+            switch result{
+                case .success(let unsplashData):
+                    guard let url = unsplashData?.results.randomElement()?.url.full else {return}
+                    self.unsplashManager.fetchImage(with: url)
                 case .failure(_):
-                    print("oops.. no se puede cargar imagen!")
+                    print("NOK")
             }
         }
-        
     }
     
     private func setupCityNameTextField(){
@@ -170,7 +106,7 @@ class MainViewController: UIViewController {
         self.cityNameTextField.textContentType  = .addressCity
         self.cityNameTextField.returnKeyType    = .done
         self.cityNameTextField.clearButtonMode  = .always
-
+        
     }
     
 }
@@ -189,5 +125,32 @@ extension MainViewController: UITextFieldDelegate {
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         return true
+    }
+}
+
+
+// MARK: - Extension for WeatherManagerDelegate
+extension MainViewController: WeatherManagerDelegate {
+    func didReceivedForecast(weatherData: OpenWeatherData) {
+        self.updateUI(weatherData: weatherData)
+    }
+}
+
+
+// MARK: - Extension for UnsplashManagerDelegate
+extension MainViewController: UnsplashManagerDelegate{
+    func didFetchImage(image: UIImage) {
+        DispatchQueue.main.async {
+            
+            UIView.animate(withDuration: 2) {
+                self.backGroundImage.alpha = 0
+            }
+            
+            UIView.animate(withDuration: 2) {
+                self.backGroundImage.image = image
+                self.backGroundImage.alpha = 1
+            }
+            
+        }
     }
 }

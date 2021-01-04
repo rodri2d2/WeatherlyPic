@@ -23,7 +23,7 @@ import UIKit
 - Attention: For more information about json response check out the official documentation https://openweathermap.org/current
  
  */
-struct OpenWeatherData: Codable {
+struct OpenWeatherData: Codable{
     
     var name:    String
     var main:    Temperature
