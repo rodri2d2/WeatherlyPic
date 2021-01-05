@@ -59,9 +59,11 @@ struct UnsplashManager {
         
         guard let url = URL(string: imageUrl) else { return }
         
-        if let data = try? Data(contentsOf: url) {
-            if let image = UIImage(data: data) {
-                delegate?.didFetchImage(image: image)
+        DispatchQueue.global(qos: .utility).async {
+            if let data = try? Data(contentsOf: url) {
+                if let image = UIImage(data: data) {
+                    delegate?.didFetchImage(image: image)
+                }
             }
         }
     }

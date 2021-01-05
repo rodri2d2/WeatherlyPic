@@ -11,7 +11,9 @@ import CoreLocation
 class MainViewController: UIViewController {
     
     // MARK: - Properties
-    var cityNameErrorCount = 0 // Counter that determines when to pop up a error msg
+    var arrayOfUrl          = [String]()//Save all urls received as a result of Unsplash API call
+    var lastImageType       = "" //To avoid unnecessary calls to the API, this property will receive last type of image called and compares with new one
+    var cityNameErrorCount  = 0 // Counter that determines when to pop up a error msg
     var weatherManager      = WeatherManager()
     var unsplashManager     = UnsplashManager()
     let locationManager     = CLLocationManager()
@@ -93,6 +95,46 @@ class MainViewController: UIViewController {
         }
     }
     
+    
+    /// Avoid unnecessary calls to the API.
+    /// This method first checks if the imageType was already searched.
+    /// If so, it will just check if self.arrayOfUrl has elements and take one randomly and fetch a request
+    /// Else it will fetch a request and asure to fill up self.arrayOfUrl with needed URLs and
+    /// - Parameter imageType: as String
+    private func prepareToFetchImageData(imageType: String){
+        
+        if (self.lastImageType == imageType && arrayOfUrl.count > 0){
+            
+            guard let url = arrayOfUrl.randomElement() else {return}
+            self.unsplashManager.fetchImage(with: url)
+            
+        }else{
+            self.unsplashManager.fetchImageData(for: imageType) { (result) in
+                switch result{
+                    case .success(let unsplashData):
+                        guard let url = unsplashData?.results.randomElement()?.url.full else {return}
+                            if let unsplash = unsplashData{
+                                self.unsplashManager.fetchImage(with: url)
+                                self.prepareArrayOfImages(from: unsplash)
+                            }
+  
+
+                    case .failure(_):
+                        print("NOK")
+                }
+            }
+        }
+        
+        lastImageType = imageType
+    }
+    
+    private func prepareArrayOfImages(from unsplash: UnsplashData){
+        
+        for url in unsplash.results{
+            arrayOfUrl.append(url.url.full)
+        }
+    }
+    
     private func setupCityNameTextField(){
         
         self.cityNameTextField.delegate         = self
@@ -116,15 +158,11 @@ class MainViewController: UIViewController {
             self.temperatureLabel.text = "\(weatherData.main.temp)"
         }
         
-        self.unsplashManager.fetchImageData(for: weatherData.weather.first!.main) { (result) in
-            switch result{
-                case .success(let unsplashData):
-                    guard let url = unsplashData?.results.randomElement()?.url.full else {return}
-                    self.unsplashManager.fetchImage(with: url)
-                case .failure(_):
-                    print("NOK")
-            }
+        if let imageToSearchFor = weatherData.weather.last?.main{
+            prepareToFetchImageData(imageType: imageToSearchFor)
         }
+        
+        
     }
     
     

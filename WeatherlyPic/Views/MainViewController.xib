@@ -76,21 +76,21 @@
                 <view alpha="0.65000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RTE-Yl-RNC" userLabel="BottomView">
                     <rect key="frame" x="0.0" y="720" width="414" height="134"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Madrid" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FyY-wa-PCF">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FyY-wa-PCF">
                             <rect key="frame" x="20" y="20" width="276" height="94"/>
                             <fontDescription key="fontDescription" type="system" pointSize="40"/>
                             <color key="textColor" systemColor="systemGray5Color"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="cloud.heavyrain.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="But-d2-tB3">
-                            <rect key="frame" x="323" y="8" width="70" height="70"/>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="sun.max.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="But-d2-tB3">
+                            <rect key="frame" x="323" y="7.5" width="70" height="69"/>
                             <color key="tintColor" systemColor="systemGray5Color"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="70" id="Frr-ZM-yIb"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="21.53" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4hK-Wd-8v7">
-                            <rect key="frame" x="307.5" y="72" width="85.5" height="42"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4hK-Wd-8v7">
+                            <rect key="frame" x="371" y="72" width="22" height="42"/>
                             <fontDescription key="fontDescription" type="system" pointSize="35"/>
                             <color key="textColor" systemColor="systemGray5Color"/>
                             <nil key="highlightedColor"/>
@@ -132,9 +132,9 @@
     </objects>
     <resources>
         <image name="back_test" width="677" height="1014"/>
-        <image name="cloud.heavyrain.fill" catalog="system" width="128" height="125"/>
         <image name="location.circle.fill" catalog="system" width="128" height="121"/>
         <image name="magnifyingglass.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="sun.max.fill" catalog="system" width="128" height="124"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
