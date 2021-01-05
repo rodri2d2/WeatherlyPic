@@ -12,7 +12,14 @@ import UIKit
 struct UnsplashManager {
     
     var delegate: UnsplashManagerDelegate?
+   
     
+    /// Make a request to Unsplash API.
+    /// The sended resquest asks for a Key word: e.g.: Clouds, Sunny, Haze etc..
+    /// The complition returns the result for this search
+    /// - Parameters:
+    ///   - imageCase: as String
+    ///   - completion: as (Result<UnsplashData?, UnsplashError>) -> Void)
     func fetchImageData(for imageCase: String, completion: @escaping (Result<UnsplashData?, UnsplashError>) -> Void) {
     
         guard let key = ApiKey.unsplashAccess else { return }
@@ -44,6 +51,10 @@ struct UnsplashManager {
         }
     }
     
+    
+    /// Make a request and translate data type to an image
+    /// Once the request has finished, it calls its delegate method - didFetchImage - passing a UIImage Object
+    /// - Parameter imageUrl: as String
     func fetchImage(with imageUrl: String) {
         
         guard let url = URL(string: imageUrl) else { return }
@@ -53,8 +64,6 @@ struct UnsplashManager {
                 delegate?.didFetchImage(image: image)
             }
         }
-        
-        
     }
     
     

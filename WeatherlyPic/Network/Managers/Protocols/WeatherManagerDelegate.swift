@@ -8,8 +8,9 @@
 import Foundation
 
 
+/// The methods that you use to receive events from an associated WeatherManager object.
 protocol WeatherManagerDelegate {
     
-    func didReceivedForecast(weatherData: OpenWeatherData)
+    func didReceiveForecast(weatherData: OpenWeatherData)
     
 }

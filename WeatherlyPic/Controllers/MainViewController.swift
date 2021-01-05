@@ -6,38 +6,57 @@
 //
 
 import UIKit
+import CoreLocation
 
 class MainViewController: UIViewController {
     
     // MARK: - Properties
-    var cityNameErrorCount = 0
-    var arrayOfImages   = [String]()
-    var weatherManager  = WeatherManager()
-    var unsplashManager = UnsplashManager()
+    var cityNameErrorCount = 0 // Counter that determines when to pop up a error msg
+    var weatherManager      = WeatherManager()
+    var unsplashManager     = UnsplashManager()
+    let locationManager     = CLLocationManager()
     
     // MARK: - IBOutlets
-    @IBOutlet private weak var weatherIcon:     UIImageView!
-    @IBOutlet weak var backGroundImage:         UIImageView!
-    @IBOutlet private weak var cityNameLabel:   UILabel!
-    @IBOutlet weak var cityNameTextField:       UITextField!
+    @IBOutlet private weak var  weatherIcon:        UIImageView!
+    @IBOutlet weak var          backGroundImage:    UIImageView!
+    @IBOutlet private weak var  cityNameLabel:      UILabel!
+    @IBOutlet weak var          cityNameTextField:  UITextField!
     
     @IBOutlet weak var temperatureLabel: UILabel!
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //
-        setupCityNameTextField()
-        
-        //
+        //Setup all Managers delegates
+        locationManager.delegate    = self
         weatherManager.delegate     = self
         unsplashManager.delegate    = self
+        
+        //Request permition to user location
+        locationManager.requestWhenInUseAuthorization()
+        
+        //Resquest a location
+        locationManager.requestLocation()
+        
+        //Setup City Name text field to specify its properties
+        setupCityNameTextField()
+
     }
     
     
     // MARK: - IBActions
-    @IBAction func didPressedSearch(_ sender: UIButton) {
+    
+    /// Search button was pressed
+    /// - Parameter sender: type UIButton
+    @IBAction func didPressSearch(_ sender: UIButton) {
         prepareToRequestByCity()
+    }
+    
+    
+    /// Compass button was pressed
+    /// - Parameter sender: type UIButton
+    @IBAction func didPressLocation(_ sender: UIButton) {
+        locationManager.requestLocation()
     }
     
     
@@ -63,7 +82,7 @@ class MainViewController: UIViewController {
             
         }else{
             
-            let alert   = UIAlertController(title: "Oops..!", message: "Please enter your city name", preferredStyle: .alert)
+            let alert   = UIAlertController(title: "Oops..!", message: "Please enter your city name your type Compass button", preferredStyle: .alert)
             let action  = UIAlertAction(title: "OK!", style: .default) { [weak self] (_) in
                 self?.cityNameErrorCount = 0
             }
@@ -74,13 +93,21 @@ class MainViewController: UIViewController {
         }
     }
     
+    private func setupCityNameTextField(){
+        
+        self.cityNameTextField.delegate         = self
+        self.cityNameTextField.textContentType  = .addressCity
+        self.cityNameTextField.returnKeyType    = .done
+        self.cityNameTextField.clearButtonMode  = .always
+        
+    }
+    
+    
     
     // MARK: - Class UI functionalities
     /// Update UI elements
     /// - Parameter weatherData: the object that contains weather info
     private func updateUI(weatherData: OpenWeatherData){
-        
-        
         
         DispatchQueue.main.async {
             self.weatherIcon.image = UIImage(systemName: weatherData.weatherImage)
@@ -100,15 +127,11 @@ class MainViewController: UIViewController {
         }
     }
     
-    private func setupCityNameTextField(){
-        
-        self.cityNameTextField.delegate         = self
-        self.cityNameTextField.textContentType  = .addressCity
-        self.cityNameTextField.returnKeyType    = .done
-        self.cityNameTextField.clearButtonMode  = .always
-        
-    }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+  
 }
 
 // MARK: - Extention for UITextFieldDelegate
@@ -131,7 +154,7 @@ extension MainViewController: UITextFieldDelegate {
 
 // MARK: - Extension for WeatherManagerDelegate
 extension MainViewController: WeatherManagerDelegate {
-    func didReceivedForecast(weatherData: OpenWeatherData) {
+    func didReceiveForecast(weatherData: OpenWeatherData) {
         self.updateUI(weatherData: weatherData)
     }
 }
@@ -150,7 +173,20 @@ extension MainViewController: UnsplashManagerDelegate{
                 self.backGroundImage.image = image
                 self.backGroundImage.alpha = 1
             }
-            
         }
+    }
+}
+
+
+extension MainViewController: CLLocationManagerDelegate{
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let coordinates = locations.last?.coordinate else { return  }
+        weatherManager.fetchWeather(by: coordinates)
+        self.locationManager.stopUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
     }
 }

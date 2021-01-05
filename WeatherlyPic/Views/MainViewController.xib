@@ -31,25 +31,39 @@
                     <rect key="frame" x="0.0" y="44" width="414" height="70"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Pnp-3I-RQb">
-                            <rect key="frame" x="81.5" y="18" width="251.5" height="34"/>
+                            <rect key="frame" x="59.5" y="18" width="295.5" height="34"/>
                             <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fhW-dI-zpT" userLabel="LocationButton">
+                                    <rect key="frame" x="0.0" y="0.5" width="34" height="33"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="fhW-dI-zpT" secondAttribute="height" multiplier="1:1" id="2ko-UY-jUa"/>
+                                    </constraints>
+                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <state key="normal" backgroundImage="location.circle.fill" catalog="system"/>
+                                    <connections>
+                                        <action selector="didPressLocation:" destination="-1" eventType="touchUpInside" id="6o7-h6-a5Y"/>
+                                    </connections>
+                                </button>
                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your city name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aAs-Pd-Zwr">
-                                    <rect key="frame" x="0.0" y="0.0" width="207.5" height="34"/>
+                                    <rect key="frame" x="44" y="0.0" width="207.5" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                 </textField>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="651-86-xZh">
-                                    <rect key="frame" x="217.5" y="0.5" width="34" height="33"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="651-86-xZh" userLabel="SearchButton">
+                                    <rect key="frame" x="261.5" y="0.5" width="34" height="33"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="651-86-xZh" secondAttribute="height" multiplier="1:1" id="LhL-or-Ufs"/>
                                     </constraints>
                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <state key="normal" backgroundImage="magnifyingglass.circle.fill" catalog="system"/>
                                     <connections>
-                                        <action selector="didPressedSearch:" destination="-1" eventType="touchUpInside" id="l6u-Rq-W5b"/>
+                                        <action selector="didPressSearch:" destination="-1" eventType="touchUpInside" id="l6u-Rq-W5b"/>
                                     </connections>
                                 </button>
                             </subviews>
+                            <constraints>
+                                <constraint firstItem="fhW-dI-zpT" firstAttribute="width" secondItem="fhW-dI-zpT" secondAttribute="height" multiplier="1:1" id="rqn-x7-czq"/>
+                            </constraints>
                         </stackView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -119,6 +133,7 @@
     <resources>
         <image name="back_test" width="677" height="1014"/>
         <image name="cloud.heavyrain.fill" catalog="system" width="128" height="125"/>
+        <image name="location.circle.fill" catalog="system" width="128" height="121"/>
         <image name="magnifyingglass.circle.fill" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
