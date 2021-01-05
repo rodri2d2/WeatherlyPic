@@ -2,7 +2,7 @@
 A weather application that changes its background image based on weather condition
 
 <p float="left">
-  <img src="https://github.com/rodri2d2/AvengersApp/blob/release/v1.0/gif/part1.gif" width="200" />
+  <img src="https://github.com/rodri2d2/WeatherlyPic/blob/release/v1.0/gif/app_gif.gif" width="200" />
 </p>
 <br />
 
