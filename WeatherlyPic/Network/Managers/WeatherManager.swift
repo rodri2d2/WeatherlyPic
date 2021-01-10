@@ -12,10 +12,10 @@ import CoreLocation
 
 struct WeatherManager {
     
-    let networkService = NetworkService()
+    private let networkService = NetworkService()
     var delegate: WeatherManagerDelegate?
-    var url = URLComponents(string: "http://api.openweathermap.org/data/2.5/weather")
-    var key: String?
+    private var url = URLComponents(string: "http://api.openweathermap.org/data/2.5/weather")
+    private var key: String?
     
     init() {
         
@@ -25,7 +25,7 @@ struct WeatherManager {
     
     /// Creates a request to call Weather API passing a City Name
     /// - Parameter cityName: as String
-    mutating func fetchWeather(by cityName: String) {
+    mutating func prepareResquest(by cityName: String) -> URLRequest?{
     
         let queryItems:[URLQueryItem] = [
             URLQueryItem(name: "appid", value: key),
@@ -33,22 +33,22 @@ struct WeatherManager {
             URLQueryItem(name: "q", value: cityName)
         ]
         url?.queryItems = queryItems
-        guard let urlToRequest = url?.url else { return }
+        guard let urlToRequest = url?.url else { return nil}
         
         var request = URLRequest(url: urlToRequest)
         request.httpMethod = "POST"
 
-        self.doFecthData(for: request)
+        return request
         
     }
     
     
     /// Creates a request to call Weather API passing Lat&Long coordinates
     /// - Parameter coodidantes: as CLLocationCoordinate2D
-    mutating func fetchWeather(by coordinate: CLLocationCoordinate2D) {
+    mutating func prepareResquest(by coordinate: CLLocationCoordinate2D) -> URLRequest? {
 
         guard let lat = coordinate.latitude.description as String?,
-              let lon = coordinate.longitude.description as String? else { return }
+              let lon = coordinate.longitude.description as String? else { return nil}
         
         let queryItems:[URLQueryItem] = [
             URLQueryItem(name: "appid", value: key),
@@ -58,23 +58,27 @@ struct WeatherManager {
         ]
         
         url?.queryItems = queryItems
-        guard let urlToRequest = url?.url else { return }
+        guard let urlToRequest = url?.url else { return nil}
         var request = URLRequest(url: urlToRequest)
         request.httpMethod = "POST"
         
-        self.doFecthData(for: request)
+        return request
+        
     }
     
     
     
     /// Make a request to the Weather API
+    /// The result is returned usign a WeatherManagerDelegate on the MainQueue
     /// - Parameter request: as URLRequest
-    private func doFecthData(for request: URLRequest){
+    func fetchWeather(for request: URLRequest){
         
         networkService.fetchData(for: request, decodeType: OpenWeatherData.self) { (result) in
             switch result {
                 case .success(let decodedData):
-                    delegate?.didReceiveForecast(weatherData: decodedData)
+                    DispatchQueue.main.async {
+                        delegate?.didReceiveForecast(weatherData: decodedData)
+                    }
                 case .failure(let error):
                     print(error.localizedDescription)
             }
